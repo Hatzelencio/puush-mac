@@ -1,0 +1,57 @@
+#!/bin/bash
+# Creado por: Hatzel Rentería
+#
+# ------------------------------------------------------------------------------
+# Llave de puush
+API_KEY=""
+#
+# Ruta almacenamiento de imágenes
+LOCAL_PATH="/Users/$USER/stored-push"
+#
+# ------------------------------------------------------------------------------
+#
+
+function generateFile () {
+  if [ ! -d "$LOCAL_PATH" ]; then
+    mkdir -p $LOCAL_PATH
+  fi
+
+  time=`date +%Y%m%d%H%M%S`
+  echo "$LOCAL_PATH/screenpuush_$time.jpg"
+}
+
+function puushFile () {
+  if [ -z "$1" ]; then
+    echo "No hay archivo especificado."
+    exit 1
+  elif [ ! -f "$1" ]; then
+    echo "Se canceló el puush."
+    exit 1
+  fi
+
+  fileURL=`curl "https://puush.me/api/up" -# -F "k=$API_KEY" -F "z=waifu" -F "f=@$1" | sed -E 's/^.+,(.+),.+,.+$/\1/'`
+
+  if [ ! -z "$fileURL" ]; then
+    echo $fileURL | pbcopy
+  fi
+}
+
+case "$1" in
+  -area)
+    echo "Area"
+      name=$(generateFile)
+      screencapture -s $name
+      puushFile "$name"
+    ;;
+  -area-local)
+    echo "Area Local"
+      name=$(generateFile)
+      screencapture -s $name
+  ;;
+  -window)
+    echo "Window"
+      name=$(generateFile)
+      screencapture $name
+      puushFile "$name"
+  ;;
+esac
