@@ -38,3 +38,7 @@ puush -window
 ```
 
 --------------------------------------------------------------------------------
+
+## ¿Atajo?
+
+Mi solución temporal es utilizar `Script Editor`. Si tienes alguna idea para utilizarlo desde el teclado, manda tu modificación; será bienvenida.
